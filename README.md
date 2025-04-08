@@ -1,66 +1,154 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ✅ Laravel AJAX To-Do App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+An interactive and elegant To-Do List app built with **Laravel 9**, powered by **AJAX**, styled using **Tailwind CSS**, and enhanced with a beautiful **Dark Mode**.
 
-## About Laravel
+> 🚀 Built with ❤️ by Vijaya Rani
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- ✅ Add, edit, delete tasks without page reloads
+- ✔️ Mark tasks as completed/incomplete
+- ❤️ Favorite tasks and highlight them
+- 🌙 Dark Mode toggle support
+- ⚡ Fully AJAX-powered (Vanilla JS)
+- 🔒 CSRF-secured endpoints
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📸 Screenshots
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+> Add actual screenshots in the `public/screenshots/` directory and link them below:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Light Mode | Dark Mode |
+|------------|-----------|
+| ![Light](public/screenshots/light-mode.png) | ![Dark](public/screenshots/dark-mode.png) |
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## 🛠️ Tech Stack
 
-### Premium Partners
+- **Framework**: Laravel 9
+- **Styling**: Tailwind CSS
+- **Frontend Logic**: AJAX (Vanilla JavaScript)
+- **Templating Engine**: Blade
+- **Database**: MySQL or SQLite
+- **Version Control**: Git + GitHub
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+---
 
-## Contributing
+## 📦 Installation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Follow these steps to run the project locally:
 
-## Code of Conduct
+### 1. Clone the Repository
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+git clone https://github.com/Kvrs16/laravel-todo-app.git
+cd laravel-todo-app
+```
 
-## Security Vulnerabilities
+### 2. Install Dependencies
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+composer install
+npm install
+npm run dev
+```
 
-## License
+### 3. Create Environment File
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+### 4. Set Up Your Database
+
+Edit the `.env` file:
+
+```env
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+
+Then run:
+
+```bash
+php artisan migrate
+```
+
+### 5. Serve the App
+
+```bash
+php artisan serve
+```
+
+Now visit `http://127.0.0.1:8000` in your browser.
+
+---
+
+## 🗂️ Project Structure
+
+- `routes/web.php`: Web routes
+- `app/Http/Controllers/TaskController.php`: Controller handling all logic
+- `app/Models/Task.php`: Task model
+- `resources/views/`: Blade views (UI)
+- `public/js/ajax.js`: Frontend AJAX handlers
+- `database/migrations/`: Table definitions
+
+---
+
+## 🔐 Security
+
+- All form and AJAX requests are protected using **Laravel’s CSRF token**
+- User inputs are **validated** and **sanitized**
+
+---
+
+## 📁 Example `.env` Configuration
+
+```env
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=base64:...
+APP_DEBUG=true
+APP_URL=http://localhost
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=todo_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+---
+
+## 🧠 Future Improvements
+
+- Add user authentication (Laravel Breeze or Jetstream)
+- Multi-user support
+- Task due dates and reminders
+- Drag-and-drop task sorting
+- Tagging and filtering
+
+---
+
+## 👩‍💻 Author
+
+**Vijaya Rani**  
+📍 CSE Student | Web & Cloud Enthusiast  
+🔗 GitHub: [@Kvrs16](https://github.com/Kvrs16)
+
+---
+
+## 📄 License
+
+This project is open-sourced under the [MIT License](LICENSE).
+
+---
+
+> 💫 If you found this helpful, don’t forget to star the repo!
