@@ -28,8 +28,12 @@
                             </svg>
                         </button>
                         <span class="task-title {{ $task->completed ? 'line-through text-gray-500' : '' }}">
-                            {{ $task->title }}
-                        </span>
+    {{ $task->title }}
+</span>
+<input type="text" value="{{ $task->title }}" 
+       class="edit-input hidden px-2 py-1 rounded border border-gray-300 dark:bg-gray-700 dark:text-white" 
+       data-id="{{ $task->id }}">
+
                     </div>
 
                     <!-- Right Side: Actions -->

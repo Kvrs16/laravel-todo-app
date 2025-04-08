@@ -1,95 +1,129 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    // Add Task
-    document.getElementById('addTaskForm')?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const input = document.getElementById('taskTitle');
-        const title = input.value.trim();
-
-        if (!title) return;
-
-        const res = await fetch('/tasks', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
-            body: JSON.stringify({ title })
-        });
-
-        const task = await res.json();
-        input.value = '';
-        location.reload(); // Simple reload to refresh UI (can be improved)
-    });
-
-    // Toggle Completion / Favorite / Delete
-    document.querySelectorAll('.toggle-complete').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const taskId = btn.dataset.id;
-            const res = await fetch(`/tasks/${taskId}/toggle-complete`, {
-                method: 'PUT',
+    // Toggle Complete
+    document.querySelectorAll('.toggle-complete').forEach(button => {
+        button.addEventListener('click', () => {
+            const id = button.dataset.id;
+            fetch(`/tasks/${id}/toggle`, {
+                method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': csrfToken
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json'
                 }
+            })
+            .then(res => res.json())
+            .then(data => {
+                button.classList.toggle('line-through');
+                button.querySelector('svg').classList.toggle('text-green-500');
+                button.querySelector('svg').classList.toggle('text-gray-400');
+                location.reload(); // Optional: Remove if you update dynamically
             });
-            const data = await res.json();
-            btn.classList.toggle('line-through');
         });
     });
 
-    document.querySelectorAll('.toggle-favorite').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const taskId = btn.dataset.id;
-            const res = await fetch(`/tasks/${taskId}/toggle-favorite`, {
-                method: 'PUT',
+    // Toggle Favorite
+    document.querySelectorAll('.toggle-favorite').forEach(button => {
+        button.addEventListener('click', () => {
+            const id = button.dataset.id;
+            fetch(`/tasks/${id}/favorite`, {
+                method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': csrfToken
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json'
                 }
+            })
+            .then(res => res.json())
+            .then(data => {
+                button.classList.toggle('text-yellow-400');
+                button.classList.toggle('text-gray-400');
             });
-            const data = await res.json();
-            btn.classList.toggle('text-yellow-400');
         });
     });
 
-    document.querySelectorAll('.delete-task').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const taskId = btn.dataset.id;
-            const confirmed = confirm('Are you sure you want to delete this task?');
-            if (!confirmed) return;
-
-            await fetch(`/tasks/${taskId}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken
-                }
-            });
-            document.getElementById(`task-${taskId}`)?.remove();
+    // Delete Task
+    document.querySelectorAll('.delete-task').forEach(button => {
+        button.addEventListener('click', () => {
+            const id = button.dataset.id;
+            if (confirm('Are you sure you want to delete this task?')) {
+                fetch(`/tasks/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': token,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById(`task-${id}`).remove();
+                });
+            }
         });
     });
 
     // Edit Task
-    document.querySelectorAll('.edit-task').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const taskId = btn.dataset.id;
-            const titleSpan = document.querySelector(`#task-${taskId} .task-title`);
-            const oldTitle = titleSpan.innerText;
-            const newTitle = prompt('Edit Task Title:', oldTitle);
+    document.querySelectorAll('.edit-task').forEach(button => {
+        button.addEventListener('click', () => {
+            const id = button.dataset.id;
+            const taskItem = document.querySelector(`#task-${id}`);
+            const titleSpan = taskItem.querySelector('.task-title');
+            const input = taskItem.querySelector('.edit-input');
 
-            if (newTitle && newTitle !== oldTitle) {
-                fetch(`/tasks/${taskId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({ title: newTitle })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    titleSpan.innerText = newTitle;
-                });
+            titleSpan.classList.add('hidden');
+            input.classList.remove('hidden');
+            input.focus();
+        });
+    });
+
+    // Handle Edit Input (Blur or Enter)
+    document.querySelectorAll('.edit-input').forEach(input => {
+        input.addEventListener('blur', () => updateTask(input));
+        input.addEventListener('keypress', e => {
+            if (e.key === 'Enter') {
+                updateTask(input);
             }
+        });
+    });
+
+    function updateTask(input) {
+        const id = input.dataset.id;
+        const newTitle = input.value;
+        fetch(`/tasks/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ title: newTitle })
+        })
+        .then(res => res.json())
+        .then(data => {
+            const taskItem = document.querySelector(`#task-${id}`);
+            const titleSpan = taskItem.querySelector('.task-title');
+            titleSpan.textContent = newTitle;
+            input.classList.add('hidden');
+            titleSpan.classList.remove('hidden');
+        });
+    }
+
+    // Add Task Form Submit
+    document.getElementById('addTaskForm')?.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const title = document.getElementById('taskTitle').value;
+
+        fetch('/tasks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ title: title })
+        })
+        .then(res => res.json())
+        .then(task => {
+            location.reload(); // or dynamically add to DOM
         });
     });
 });
